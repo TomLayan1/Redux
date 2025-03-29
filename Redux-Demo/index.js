@@ -1,3 +1,7 @@
+// Import redux
+const redux = require('redux');
+const createStore = redux.createStore;
+
 // State of the app. Should be an object
 const initialState = {
   numOfCakes: 10
@@ -29,3 +33,23 @@ const reducer = (state = initialState, action) => {
     default: return state 
   }
 }
+
+
+// Let store handle application state
+const store = createStore(reducer);
+
+// Access the state
+console.log('initial state: ', store.getState());
+
+// Register listner
+const unsubscribe = store.subscribe(() => console.log('Updated state: ', store.getState()));
+
+// Update state
+store.dispatch(buyCake());
+store.dispatch(buyCake());
+store.dispatch(buyCake());
+store.dispatch(buyCake());
+store.dispatch(buyCake());
+store.dispatch(buyCake());
+
+unsubscribe();
