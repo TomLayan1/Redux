@@ -1,26 +1,39 @@
 // Import redux
 const redux = require('redux');
 const createStore = redux.createStore;
+const combineReducers = redux.combineReducers
 
 // State of the app. Should be an object
-const initialState = {
+const initialCakeState = {
   numOfCakes: 10
+}
+
+const initialIceCreamState = {
+  numOfIceCreams: 20
 }
 
 // Name of the action
 const buy_cake = 'buy_cake';
+const buy_iceCream = 'buy_iceCream'
 
 // Create an action
-// buyCake function is an action creator that returns an action
+// buyCake and buyIceCreme function are action creators that returns an action
 function buyCake() {
   return {
     type: buy_cake,
-    info: 'First redux action'
+    info: 'Handles buying of cakes'
+  }
+}
+
+function buyIceCream() {
+  return {
+    type: buy_iceCream,
+    info: 'Handles buying of ice cremes'
   }
 }
 
 // Create a reducer
-const reducer = (state = initialState, action) => {
+const cakeReducer = (state = initialCakeState, action) => {
   switch (action.type) {
     case buy_cake: return {
       // Return a copy of the state object. Use the spread operator
@@ -34,9 +47,25 @@ const reducer = (state = initialState, action) => {
   }
 }
 
+const iceCreamReducer = (state = initialIceCreamState, action) => {
+  switch(action.type) {
+    case buy_iceCream: return {
+      ...state,
+      numOfIceCreams: state.numOfIceCreams - 1
+    }
+
+    default: return state
+  }
+}
+
+// Use the combineReducers
+const rootReducer = combineReducers({
+  cake: cakeReducer,
+  iceCream: iceCreamReducer
+})
 
 // Let store handle application state
-const store = createStore(reducer);
+const store = createStore(rootReducer);
 
 // Access the state
 console.log('initial state: ', store.getState());
@@ -48,8 +77,8 @@ const unsubscribe = store.subscribe(() => console.log('Updated state: ', store.g
 store.dispatch(buyCake());
 store.dispatch(buyCake());
 store.dispatch(buyCake());
-store.dispatch(buyCake());
-store.dispatch(buyCake());
-store.dispatch(buyCake());
+store.dispatch(buyIceCream());
+store.dispatch(buyIceCream());
+store.dispatch(buyIceCream());
 
 unsubscribe();
