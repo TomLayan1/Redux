@@ -1,7 +1,10 @@
-// Import redux
 const redux = require('redux');
+const reduxLogger = require('redux-logger');
 const createStore = redux.createStore;
-const combineReducers = redux.combineReducers
+const applyMiddleware = redux.applyMiddleware;
+const combineReducers = redux.combineReducers;
+
+const logger = reduxLogger.createLogger();
 
 // State of the app. Should be an object
 const initialCakeState = {
@@ -65,13 +68,14 @@ const rootReducer = combineReducers({
 })
 
 // Let store handle application state
-const store = createStore(rootReducer);
+// Pass applyMiddleware as an arguement to middleware and apply the middleware to the middleware method
+const store = createStore(rootReducer, applyMiddleware(logger));
 
 // Access the state
 console.log('initial state: ', store.getState());
 
 // Register listner
-const unsubscribe = store.subscribe(() => console.log('Updated state: ', store.getState()));
+// const unsubscribe = store.subscribe(() => console.log('Updated state: ', store.getState()));
 
 // Update state
 store.dispatch(buyCake());
@@ -81,4 +85,4 @@ store.dispatch(buyIceCream());
 store.dispatch(buyIceCream());
 store.dispatch(buyIceCream());
 
-unsubscribe();
+// unsubscribe();
